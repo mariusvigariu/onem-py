@@ -1,25 +1,25 @@
 import json
 
+from onem import menus
 from onem.common import sanitize_method, sanitize_url
 
 
 class FormItemType(object):
     STRING = 'string'
     INT = 'int'
-    BOOL = 'bool'
     FLOAT = 'float'
     DATE = 'date'
     DATETIME = 'datetime'
 
 
 class FormItem(object):
-    def __init__(self, label, name, item_type, header=None, footer=None,
+    def __init__(self, name, item_type, label, header=None, footer=None,
                  url=None, method=None):
         """
-        :param label: string used in the item's description
         :param name: string used to identify the item
         :param item_type: FormItemType attribute string used to identify the
                           item type
+        :param label: string used in the item's description
         :param header: string used to display in header for this form item
                        (overwrites Form.header)
         :param footer: string used to display in header for this form item
@@ -31,16 +31,15 @@ class FormItem(object):
         allowed_item_types = (
             FormItemType.STRING,
             FormItemType.INT,
-            FormItemType.BOOL,
             FormItemType.DATE,
             FormItemType.DATETIME,
         )
         if item_type not in allowed_item_types:
             raise Exception(f'Invalid type. Allowed: {allowed_item_types}')
 
-        self.label = label
         self.name = name
         self.item_type = item_type
+        self.label = label
 
         self.header = header
         self.footer = footer
@@ -110,7 +109,7 @@ class Form(object):
 
         assert isinstance(items, (list, tuple))
         for item in items:
-            assert isinstance(item, FormItem)
+            assert isinstance(item, (FormItem, FormItemMenu))
 
         self.meta = meta
 
@@ -132,3 +131,30 @@ class Form(object):
 
     def as_json(self):
         return json.dumps(self.as_data())
+
+
+class FormItemMenuItem(menus.MenuItem):
+    def __init__(self, label, value=None, is_option=True):
+        super(FormItemMenuItem, self).__init__(label, is_option=is_option)
+        if is_option:
+            assert value is not None
+
+        self.value = value
+
+    def as_data(self):
+        data = super(FormItemMenuItem, self).as_data()
+        data['value'] = self.value
+        data.pop('path')
+        data.pop('method')
+        return data
+
+
+class FormItemMenu(menus.Menu):
+    def __init__(self, name, body, header=None, footer=None):
+        super(FormItemMenu, self).__init__(body, header=header, footer=footer)
+        self.name = name
+
+    def as_data(self):
+        data = super(FormItemMenu, self).as_data()
+        data['name'] = self.name
+        return data
