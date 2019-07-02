@@ -12,6 +12,9 @@ def sanitize_method(method, default='GET'):
 
 
 def sanitize_url(url):
+    if not isinstance(url, str):
+        return None
+
     if not url.startswith('/'):
         raise Exception('Invalid url path.')
     return url
