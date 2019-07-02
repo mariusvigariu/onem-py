@@ -30,7 +30,7 @@ class MenuItem(object):
         return {
             'description': self.label,
             'method': self.method,
-            'nextRoute': self.url,
+            'path': self.url,
             'type': 'option' if self.is_option else 'content'
         }
 

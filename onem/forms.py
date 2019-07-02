@@ -58,7 +58,7 @@ class FormItem(object):
             'header': self.header,
             'method': self.method,
             'name': self.name,
-            'nextRoute': self.url,
+            'path': self.url,
             'type': self.item_type,
         }
 
@@ -125,7 +125,7 @@ class Form(object):
             'footer': self.footer,
             'body': [item.as_data() for item in self.items],
             'meta': self.meta.as_data() if self.meta else None,
-            'nextRoute': self.url,
+            'path': self.url,
             'method': self.method
         }
 
