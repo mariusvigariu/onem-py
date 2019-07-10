@@ -38,12 +38,29 @@ class MenuItem(object):
         return json.dumps(self.as_data())
 
 
+class MenuMeta(object):
+    """ Meta information for a Menu object """
+    def __init__(self, auto_select=True):
+        """
+        :param auto_select: if there is one option in the menu, this parameter
+                            indicates whether an auto selection will happen
+        """
+        assert(isinstance(auto_select, bool))
+        self.auto_select = auto_select
+
+    def as_data(self):
+        return {
+            'auto_select': self.auto_select,
+        }
+
+
 class Menu(object):
-    def __init__(self, body, header=None, footer=None):
+    def __init__(self, body, header=None, footer=None, meta=None):
         """
         :param body: sequence of MenuItem instances
         :param header: string displayed in the header
         :param footer: string displayed in the footer
+        :param meta: MenuMeta instance
         """
         self.header = header
         self.footer = footer
@@ -54,12 +71,19 @@ class Menu(object):
 
         self.body = body
 
+        self.meta = meta
+        if self.meta is None:
+            return
+
+        assert isinstance(self.meta, MenuMeta)
+
     def as_data(self):
         return {
             'type': 'menu',
             'header': self.header,
             'footer': self.footer,
-            'body': [item.as_data() for item in self.body]
+            'body': [item.as_data() for item in self.body],
+            'meta': self.meta.as_data() if self.meta else None,
         }
 
     def as_json(self):
