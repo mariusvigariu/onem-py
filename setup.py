@@ -7,7 +7,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name='onem-py',
-    version='1.2',
+    version='1.3',
     author='Marius Vigariu',
     author_email='marius.vigariu@onem.com',
     description='Client which defines the JSON structure accepted by ONEm '
