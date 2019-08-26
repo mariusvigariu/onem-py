@@ -17,8 +17,6 @@ Then install the ONEm client
 
 ### Menu
 
-Define a menu:
-
 ```
 In [1]: from onem import menus                                                                                                                                          
 
@@ -26,7 +24,9 @@ In [2]: menu_item1 = menus.MenuItem('First menu item', '/callback-path-m1')
 
 In [3]: menu_item2 = menus.MenuItem('Second menu item which is just content', is_option=False)                                                                          
 
-In [4]: menu = menus.Menu([menu_item1, menu_item2], header='Menu header', footer='Displayed at the bottom')                                                             
+In [4]: menu = menus.Menu([menu_item1, menu_item2],
+                          header='Menu header',
+                          footer='Displayed at the bottom')
 
 In [5]: menu.as_data()                                                                                                                                                  
 Out[5]: 
@@ -44,10 +44,6 @@ Out[5]:
  'meta': None}
 
 ```
-
-Notes:
-
-1. Header and footer are not mandatory and not final. ONEm platform will modify them according to the service standards.
 
 
 ### Form
@@ -98,10 +94,3 @@ Out[5]:
  'method': 'POST'}
 
 ```
-
-
-NOTES: 
-
-1. The header or footer of a `FormItem` will overwrite the header or footer of the `Form`.
-2. If present, the `FormItem.url` is triggered immediately after it's been set.
-3. `Form.url` is always triggered after all items have been processed.
