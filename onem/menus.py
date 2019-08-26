@@ -4,15 +4,18 @@ from onem.common import sanitize_method, sanitize_url
 
 
 class MenuItem(object):
-    def __init__(self, label, url=None, method=None, is_option=True):
+    def __init__(self, label, url=None, method=None, is_option=True,
+                 text_search=None):
         """
         :param label: string used in the item's description
         :param url: the callback url path triggered when accessing this item
         :param method: how the callback url will be triggered
         :param is_option: bool to indicate whether the item is an option item
-                          or a separator item. The separator option body are
-                          used for presentational purposes only, so url and
-                          method won't count here
+            or a separator item. The separator option body are
+            used for presentational purposes only, so url and
+            method won't count here
+        :param text_search: if present this text will be used as search base
+            against user input to narrow down the displayed options
         """
         self.is_option = is_option
 
@@ -20,18 +23,21 @@ class MenuItem(object):
             self.label = label
             self.url = None
             self.method = None
+            self.text_search = None
             return
 
         self.label = label
         self.url = sanitize_url(url)
         self.method = sanitize_method(method)
+        self.text_search = text_search
 
     def as_data(self):
         return {
             'description': self.label,
             'method': self.method,
             'path': self.url,
-            'type': 'option' if self.is_option else 'content'
+            'type': 'option' if self.is_option else 'content',
+            'text_search': self.text_search
         }
 
     def as_json(self):

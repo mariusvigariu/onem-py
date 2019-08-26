@@ -134,8 +134,10 @@ class Form(object):
 
 
 class FormItemMenuItem(menus.MenuItem):
-    def __init__(self, label, value=None, is_option=True):
-        super(FormItemMenuItem, self).__init__(label, is_option=is_option)
+    def __init__(self, label, value=None, is_option=True, text_search=None):
+        super(FormItemMenuItem, self).__init__(
+            label, is_option=is_option, text_search=text_search
+        )
         if is_option:
             assert value is not None
 
