@@ -66,6 +66,20 @@ class FormItem(object):
         return json.dumps(self.as_data())
 
 
+class HiddenFormItem(FormItem):
+    def __init__(self, name, value):
+        super(HiddenFormItem, self).__init__(name, FormItemType.STRING, '')
+        self.value = value
+
+    def as_data(self):
+        data = super(HiddenFormItem, self).as_data()
+        data.update({
+            'hidden': True,
+            'value': self.value,
+        })
+        return data
+
+
 class FormMeta(object):
     """ Meta information for a Form object """
     def __init__(self, status=True, status_in_header=True, confirm=True):
